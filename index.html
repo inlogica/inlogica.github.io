@@ -41,9 +41,9 @@
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                    <span class="sr-only">Toggle navigation</span><i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Интеллектуальное Здание</a>
+                <a class="navbar-brand page-scroll" href="#page-top"><img src="img/logo.png"> </a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -86,13 +86,16 @@
         </div>
     </header>
 
-    <section class="bg-primary" id="about">
-        <div class="container">
+    <section class="bg-primary " id="about">
+        <div class="container no-padding">
             <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 text-center">
+                <div class="col-lg-12 text-center ">
                     <h2 class="section-heading">Мы не предлагаем оборудование,<br> мы предлагаем решения!</h2>
                     <hr class="light">
-
+                </div>
+            </div>
+            <div class="row">
+                <div class = "col-lg-8 text-center">
                     <p class="text-faded textlarger">Интеллектуальное Здание осуществляет управление освещением,
                             системами вентиляции, кондиционирования и отопления, обеспечивает
                             контроль над системой безопасности здания. Информирует Вас о текущих событиях.</p>
@@ -104,17 +107,27 @@
 
                         </p>
 
-                    <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">Подробнее</a>
                 </div>
+                <div class="col-lg-4  text-center">
+                    <div class="panel panel-danger imgcen setpadding ">
+                         <img src = mainlogo.png>
+                    </div>
+                    <p class="text-faded text-center">ООО "Инженерная логика" была создана в 2008 году группой
+                    специалистов с опытом работы в сфере учета энергоресурсов, автоматизированных систем управления и комплексных проектах по энергоэффективности.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-12 text-center">
+                <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">Подробнее</a>
             </div>
         </div>
     </section>
 
-    <section id="services">
+    <section class="no-padding" id="services">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Решения и возможности</h2>
+                    <h2 class="section-heading">Решения и Возможности</h2>
                     <hr class="primary">
                 </div>
             </div>
@@ -288,7 +301,7 @@
 
     <!--Our Partner Start-->
     <section id="partners">
-        <div class="container bottombuffer">
+        <div class="container">
             <div class="row">
                 <div class="text-center">
                     <h2 class="section-heading">Наши Партнеры</h2>
@@ -308,13 +321,20 @@
             </div>
         </div>
         <div class="col-lg-12 top-buffer text-center">
-            <a href="#portfolio" class="btn btn-primary btn-xl page-scroll">Далее</a>
+            <a href="#portfolio" class="btn btn-primary btn-xl page-scroll">Наши Работы</a>
         </div>
     </div>
     </section>
     <!--Our Partner End-->
 
-    <section  id="portfolio">
+    <section class="no-padding" id="portfolio">
+        <div class="container no-margin">
+        <div class="row">
+            <div class="text-center">
+                <h2 class="section-heading">Наши Работы</h2>
+                <hr class="primary">
+            </div>
+        </div>
         <div class="container-fluid">
             <div class="row no-gutter popup-gallery">
                 <div class="col-lg-4 col-sm-6">
@@ -323,7 +343,7 @@
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">
                                 <div class="project-name">
-                                    Лисичанская
+                                    Проєкт 1
                                 </div>
                                 <div class="project-category text-faded">
                                     Description
@@ -338,7 +358,7 @@
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">
                                 <div class="project-name">
-                                    Project Name
+                                    Проєкт 2
                                 </div>
                                 <div class="project-category text-faded">
                                     Description
@@ -354,7 +374,7 @@
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">
                                 <div class="project-name">
-                                    Project Name
+                                    Проэкт 3
                                 </div>
                                 <div class="project-category text-faded">
                                     Description
@@ -410,6 +430,10 @@
                 </div>
             </div>
         </div>
+            <div class="col-lg-12 top-buffer text-center">
+                <a href="#contact" class="btn btn-primary btn-xl page-scroll">Контакты</a>
+            </div>
+        </div>
     </section>
 
     <section id="contact">
@@ -431,6 +455,7 @@
                     <p><a href="mailto:o.ra@inlogika.com">o.ra@inlogika.com</a></p>
                 </div>
             </div>
+
         </div>
     </section>
 
