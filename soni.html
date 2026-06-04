@@ -89,7 +89,7 @@
   <div class="content">
     <div class="time-block">
       <div class="label">Статус вкладання Соні</div>
-      <div class="status">Вкладається</div>
+      <div class="status" id="status">Вкладається</div>
     </div>
 
     <div class="divider"></div>
@@ -150,13 +150,20 @@
     initStars();
     drawStars();
 
-    // ── Clock ────────────────────────────────────────────────────────
+    // ── Clock & status ───────────────────────────────────────────────
+    const SLEEP_H = 22, SLEEP_M = 15;
+
     function pad(n) { return String(n).padStart(2, '0'); }
 
     function tick() {
       const d = new Date();
       document.getElementById('current-time').textContent =
         pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+
+      const nowMin = d.getHours() * 60 + d.getMinutes();
+      const sleepMin = SLEEP_H * 60 + SLEEP_M;
+      document.getElementById('status').textContent =
+        nowMin >= sleepMin ? 'Спить' : 'Вкладається';
     }
 
     tick();
