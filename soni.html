@@ -3,306 +3,164 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Статус Соні</title>
+  <title>Соня</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;700;900&display=swap');
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Nunito', sans-serif;
+      background: #07111f;
+      color: #c8dff7;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2rem;
-      transition: background 1s ease, color 1s ease;
+      overflow: hidden;
     }
 
-    body.sleeping {
-      background: linear-gradient(135deg, #0d1b2a 0%, #1b2d3e 50%, #0d1b2a 100%);
-      color: #c8dff7;
-    }
-
-    body.falling-asleep {
-      background: linear-gradient(135deg, #1a0533 0%, #2d1b4e 50%, #1a0533 100%);
-      color: #e8d5ff;
-    }
-
-    body.awake {
-      background: linear-gradient(135deg, #fff8e7 0%, #ffeaa0 50%, #fff8e7 100%);
-      color: #3d2c00;
-    }
-
-    .stars {
+    /* Stars */
+    canvas {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      pointer-events: none;
-      overflow: hidden;
       z-index: 0;
-    }
-
-    .star {
-      position: absolute;
-      border-radius: 50%;
-      background: white;
-      opacity: 0;
-      animation: twinkle 3s infinite;
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0; }
-      50% { opacity: 0.8; }
     }
 
     .content {
       position: relative;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1.5rem, 5vh, 3.5rem);
+      padding: 2rem;
     }
 
-    .emoji {
-      font-size: clamp(4rem, 18vw, 12rem);
-      line-height: 1;
-      margin-bottom: 0.2em;
-      animation: float 4s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-
-    .name {
-      font-size: clamp(2rem, 10vw, 7rem);
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.1em;
+    .label {
+      font-size: clamp(1rem, 3.5vw, 2rem);
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.55;
     }
 
     .status {
-      font-size: clamp(2.5rem, 13vw, 9rem);
+      font-size: clamp(3rem, 14vw, 10rem);
       font-weight: 900;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      margin-bottom: 0.5em;
-      text-shadow: 0 0 40px currentColor;
+      color: #7ec8e3;
+      text-shadow: 0 0 60px rgba(126,200,227,0.45);
+      letter-spacing: 0.03em;
+      line-height: 1;
     }
-
-    body.sleeping .status { color: #7ec8e3; }
-    body.falling-asleep .status { color: #c9a0ff; }
-    body.awake .status { color: #e6a800; }
 
     .divider {
-      width: clamp(60px, 20vw, 200px);
-      height: 3px;
-      border-radius: 2px;
-      margin: 0.5em auto 1em;
-      opacity: 0.4;
-    }
-
-    body.sleeping .divider { background: #7ec8e3; }
-    body.falling-asleep .divider { background: #c9a0ff; }
-    body.awake .divider { background: #e6a800; }
-
-    .times {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5em;
+      width: clamp(40px, 15vw, 120px);
+      height: 2px;
+      background: rgba(126,200,227,0.25);
+      border-radius: 1px;
     }
 
     .time-block {
       display: flex;
       flex-direction: column;
       align-items: center;
-    }
-
-    .time-label {
-      font-size: clamp(0.8rem, 3vw, 1.6rem);
-      font-weight: 400;
-      opacity: 0.7;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 0.1em;
+      gap: 0.3em;
     }
 
     .time-value {
-      font-size: clamp(2.5rem, 12vw, 8rem);
+      font-size: clamp(3.5rem, 16vw, 11rem);
       font-weight: 700;
       letter-spacing: 0.05em;
       font-variant-numeric: tabular-nums;
+      line-height: 1;
     }
 
-    body.sleeping .time-value { color: #c8dff7; }
-    body.falling-asleep .time-value { color: #e8d5ff; }
-    body.awake .time-value { color: #3d2c00; }
-
-    .expected-note {
-      font-size: clamp(0.7rem, 2.5vw, 1.3rem);
-      opacity: 0.55;
-      margin-top: 1.5em;
-      font-weight: 300;
-    }
+    #current-time { color: #c8dff7; }
+    #expected-time { color: rgba(200,223,247,0.65); }
   </style>
 </head>
-<body class="sleeping">
-
-  <!-- Stars (shown during sleep/falling-asleep) -->
-  <div class="stars" id="stars"></div>
+<body>
+  <canvas id="sky"></canvas>
 
   <div class="content">
-    <div class="emoji" id="emoji">🌙</div>
-    <div class="name">Соня</div>
-    <div class="status" id="status">Спить</div>
-    <div class="divider"></div>
-    <div class="times">
-      <div class="time-block">
-        <div class="time-label">Поточний час</div>
-        <div class="time-value" id="current-time">—</div>
-      </div>
-      <div class="time-block">
-        <div class="time-label" id="expected-label">Очікується прокидання</div>
-        <div class="time-value" id="expected-time">—</div>
-      </div>
+    <div class="time-block">
+      <div class="label">Статус вкладання Соні</div>
+      <div class="status">Вкладається</div>
     </div>
-    <div class="expected-note" id="note"></div>
+
+    <div class="divider"></div>
+
+    <div class="time-block">
+      <div class="label">Поточний час</div>
+      <div class="time-value" id="current-time">—</div>
+    </div>
+
+    <div class="time-block">
+      <div class="label">Очікуване засинання</div>
+      <div class="time-value" id="expected-time">21:00</div>
+    </div>
   </div>
 
   <script>
-    // ── Schedule config ──────────────────────────────────────────────
-    // All times are local (device timezone)
-    const SCHEDULE = {
-      // Morning nap: falling asleep window + sleep window
-      morningNapStart:   { h: 9,  m: 30 }, // start putting to sleep
-      morningNapAsleep:  { h: 10, m: 0  }, // expected fully asleep
-      morningNapEnd:     { h: 11, m: 30 }, // expected wake
+    // ── Stars ────────────────────────────────────────────────────────
+    const canvas = document.getElementById('sky');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
 
-      // Afternoon nap
-      afternoonNapStart:  { h: 13, m: 0  },
-      afternoonNapAsleep: { h: 13, m: 30 },
-      afternoonNapEnd:    { h: 15, m: 30 },
-
-      // Night sleep
-      nightStart:  { h: 20, m: 30 },
-      nightAsleep: { h: 21, m: 0  },
-      nightEnd:    { h: 7,  m: 0  }, // next morning
-    };
-    // ────────────────────────────────────────────────────────────────
-
-    function toMinutes(h, m) { return h * 60 + m; }
-    function pad(n) { return String(n).padStart(2, '0'); }
-    function fmt(t) { return pad(t.h) + ':' + pad(t.m); }
-    function nowMin() {
-      const d = new Date();
-      return d.getHours() * 60 + d.getMinutes();
-    }
-
-    const S = SCHEDULE;
-    const nm = toMinutes;
-
-    function getState(min) {
-      // Night sleep crosses midnight: 20:30 – 07:00 next day
-      const nightStartM  = nm(S.nightStart.h,  S.nightStart.m);
-      const nightAsleepM = nm(S.nightAsleep.h, S.nightAsleep.m);
-      const nightEndM    = nm(S.nightEnd.h,    S.nightEnd.m);  // 420
-
-      // After-midnight portion of night sleep (0:00 – 7:00)
-      if (min < nightEndM) {
-        return { phase: 'sleeping', emoji: '😴', label: 'Спить',
-                 expectedLabel: 'Очікується прокидання', expectedTime: fmt(S.nightEnd) };
-      }
-
-      // Morning nap
-      if (min >= nm(S.morningNapStart.h, S.morningNapStart.m) &&
-          min <  nm(S.morningNapAsleep.h, S.morningNapAsleep.m)) {
-        return { phase: 'falling-asleep', emoji: '🌛', label: 'Вкладається',
-                 expectedLabel: 'Очікується засне', expectedTime: fmt(S.morningNapAsleep) };
-      }
-      if (min >= nm(S.morningNapAsleep.h, S.morningNapAsleep.m) &&
-          min <  nm(S.morningNapEnd.h, S.morningNapEnd.m)) {
-        return { phase: 'sleeping', emoji: '😴', label: 'Спить',
-                 expectedLabel: 'Очікується прокидання', expectedTime: fmt(S.morningNapEnd) };
-      }
-
-      // Afternoon nap
-      if (min >= nm(S.afternoonNapStart.h, S.afternoonNapStart.m) &&
-          min <  nm(S.afternoonNapAsleep.h, S.afternoonNapAsleep.m)) {
-        return { phase: 'falling-asleep', emoji: '🌛', label: 'Вкладається',
-                 expectedLabel: 'Очікується засне', expectedTime: fmt(S.afternoonNapAsleep) };
-      }
-      if (min >= nm(S.afternoonNapAsleep.h, S.afternoonNapAsleep.m) &&
-          min <  nm(S.afternoonNapEnd.h, S.afternoonNapEnd.m)) {
-        return { phase: 'sleeping', emoji: '😴', label: 'Спить',
-                 expectedLabel: 'Очікується прокидання', expectedTime: fmt(S.afternoonNapEnd) };
-      }
-
-      // Evening falling asleep
-      if (min >= nightStartM && min < nightAsleepM) {
-        return { phase: 'falling-asleep', emoji: '🌛', label: 'Вкладається',
-                 expectedLabel: 'Очікується засне', expectedTime: fmt(S.nightAsleep) };
-      }
-
-      // Night sleep (before midnight)
-      if (min >= nightAsleepM) {
-        return { phase: 'sleeping', emoji: '🌙', label: 'Спить',
-                 expectedLabel: 'Очікується прокидання', expectedTime: fmt(S.nightEnd) };
-      }
-
-      // Awake
-      // figure out next event
-      let nextLabel, nextTime;
-      if (min < nm(S.morningNapStart.h, S.morningNapStart.m)) {
-        nextLabel = 'Наступне вкладання'; nextTime = fmt(S.morningNapStart);
-      } else if (min < nm(S.afternoonNapStart.h, S.afternoonNapStart.m)) {
-        nextLabel = 'Наступне вкладання'; nextTime = fmt(S.afternoonNapStart);
-      } else {
-        nextLabel = 'Наступне вкладання'; nextTime = fmt(S.nightStart);
-      }
-
-      return { phase: 'awake', emoji: '☀️', label: 'Не спить',
-               expectedLabel: nextLabel, expectedTime: nextTime };
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
 
     function initStars() {
-      const container = document.getElementById('stars');
-      for (let i = 0; i < 60; i++) {
-        const s = document.createElement('div');
-        s.className = 'star';
-        const size = Math.random() * 3 + 1;
-        s.style.cssText = `
-          width:${size}px; height:${size}px;
-          top:${Math.random()*100}%;
-          left:${Math.random()*100}%;
-          animation-delay:${Math.random()*3}s;
-          animation-duration:${2+Math.random()*3}s;
-        `;
-        container.appendChild(s);
+      stars = [];
+      const count = Math.floor((canvas.width * canvas.height) / 6000);
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.4 + 0.3,
+          alpha: Math.random(),
+          speed: 0.003 + Math.random() * 0.008,
+          dir: Math.random() < 0.5 ? 1 : -1
+        });
       }
     }
 
-    function update() {
-      const now = new Date();
-      const min = now.getHours() * 60 + now.getMinutes();
-      const timeStr = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
-      const state = getState(min);
-
-      document.getElementById('current-time').textContent = timeStr;
-      document.getElementById('expected-time').textContent = state.expectedTime;
-      document.getElementById('expected-label').textContent = state.expectedLabel;
-      document.getElementById('status').textContent = state.label;
-      document.getElementById('emoji').textContent = state.emoji;
-
-      document.body.className = state.phase;
-
-      const starsEl = document.getElementById('stars');
-      starsEl.style.display = (state.phase !== 'awake') ? 'block' : 'none';
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const s of stars) {
+        s.alpha += s.speed * s.dir;
+        if (s.alpha >= 1) { s.alpha = 1; s.dir = -1; }
+        if (s.alpha <= 0) { s.alpha = 0; s.dir =  1; }
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,223,247,${s.alpha})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
     }
 
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize();
     initStars();
-    update();
-    setInterval(update, 1000);
+    drawStars();
+
+    // ── Clock ────────────────────────────────────────────────────────
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function tick() {
+      const d = new Date();
+      document.getElementById('current-time').textContent =
+        pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    }
+
+    tick();
+    setInterval(tick, 1000);
   </script>
 </body>
 </html>
